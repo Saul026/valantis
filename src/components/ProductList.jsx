@@ -24,7 +24,6 @@ const ProductList = ({ filter }) => {
     const fetchData = async () => {
       setProductsInfo("");
       const data = await fetchProducts(index, filter);
-      console.log(data);
       setProductsInfo(data);
     };
 
@@ -39,11 +38,11 @@ const ProductList = ({ filter }) => {
           <div>Loading...</div>
         ) : (
           <div>
-           <div className="product-items__container">
-           {productsInfo.map((product) => (
-              <Product key={product.id} product={product} />
-            ))}
-           </div>
+            <div className="product-items__container">
+              {productsInfo.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </div>
             <Pagination
               incIndex={incIndex}
               decIndex={decIndex}

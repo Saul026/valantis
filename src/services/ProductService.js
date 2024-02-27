@@ -32,19 +32,7 @@ const fetchProductId = async (index) => {
   }
 };
 
-const getItems = async (filter, ids) => {
-  let body = JSON.stringify({
-    action: "get_items",
-    params: { ids: ids },
-  });
-
-  if (filter) {
-    body = JSON.stringify({
-      action: "filter",
-      params: filter,
-    });
-  }
-
+const getItems = async (ids) => {
   try {
     const data = await fetch("https://api.valantis.store:41000/", {
       method: "POST",
@@ -52,7 +40,10 @@ const getItems = async (filter, ids) => {
         "Content-Type": "application/json",
         "X-Auth": password,
       },
-      body: body,
+      body: JSON.stringify({
+        action: "get_items",
+        params: { ids: ids },
+      }),
     }).then((res) => res.json());
 
     if (!data.result) {
@@ -70,11 +61,38 @@ const getItems = async (filter, ids) => {
   }
 };
 
+const filterFetch = async (filter) => {
+  try {
+    const data = await fetch("https://api.valantis.store:41000/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Auth": password,
+      },
+      body: JSON.stringify({
+        action: "filter",
+        params: filter,
+      }),
+    }).then((res) => res.json());
+
+    if (!data.result) {
+      return [];
+    }
+
+    return data.result;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+};
+
 const fetchProducts = async (index, filter) => {
-  const ids = await fetchProductId(index);
-  console.log(ids);
-  const data = await getItems(filter, ids);
-  console.log(data);
+  let ids
+  if (filter) {
+    ids = await filterFetch(filter);
+  } else {
+    ids = await fetchProductId(index);
+  }
+  const data = await getItems(ids);
   return data;
 };
 
