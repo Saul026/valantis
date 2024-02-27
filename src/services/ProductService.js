@@ -9,10 +9,11 @@ const getPassword = () => {
 };
 
 const password = getPassword();
+const url = new URL("https://api.valantis.store:41000/")
 
 const fetchProductId = async (index) => {
   try {
-    const response = await fetch("https://api.valantis.store:41000/", {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +35,7 @@ const fetchProductId = async (index) => {
 
 const getItems = async (ids) => {
   try {
-    const data = await fetch("https://api.valantis.store:41000/", {
+    const data = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +64,7 @@ const getItems = async (ids) => {
 
 const filterFetch = async (filter) => {
   try {
-    const data = await fetch("https://api.valantis.store:41000/", {
+    const data = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,12 +82,12 @@ const filterFetch = async (filter) => {
 
     return data.result;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error fetching filtered products:", error);
   }
 };
 
 const fetchProducts = async (index, filter) => {
-  let ids
+  let ids;
   if (filter) {
     ids = await filterFetch(filter);
   } else {
