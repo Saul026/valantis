@@ -21,7 +21,7 @@ const fetchProductId = async (index) => {
       },
       body: JSON.stringify({
         action: "get_ids",
-        params: { limit: 10, offset: 10 * index - 10 },
+        params: { limit: 50, offset: 10 * index - 10 },
       }),
     }).then((res) => res.json());
 
